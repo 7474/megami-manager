@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MegamiManager.Models;
+using MegamiManager.Models.MegamiModels;
 
 namespace MegamiManager.Data
 {
@@ -21,6 +22,34 @@ namespace MegamiManager.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+
+            // Magemi : Tag
+            builder.Entity<MegamiTag>()
+                .HasKey(t => new { t.MegamiId, t.TagId });
+            builder.Entity<MegamiTag>()
+                .HasOne(mt => mt.Megami)
+                .WithMany(m => m.MegamiTags)
+                .HasForeignKey(mt => mt.MegamiId);
+            builder.Entity<MegamiTag>()
+                .HasOne(mt => mt.Tag)
+                .WithMany(t => t.MegamiTags)
+                .HasForeignKey(mt => mt.TagId);
+
+            // Team : Megami
+            // Teamから引くか、Megamiから引くか微妙なところだがTeamを主とする
+            builder.Entity<MegamiTeam>()
+                .HasKey(t => new { t.TeamId, t.MegamiId });
+            builder.Entity<MegamiTeam>()
+                .HasOne(mt => mt.Team)
+                .WithMany(t => t.Members)
+                .HasForeignKey(mt => mt.TeamId);
+            builder.Entity<MegamiTeam>()
+                .HasOne(mt => mt.Megami)
+                .WithMany(m => m.Teams)
+                .HasForeignKey(mt => mt.MegamiId);
         }
+
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<Megami> Megami { get; set; }
     }
 }

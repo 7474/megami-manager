@@ -1,0 +1,137 @@
+@model IEnumerable<MegamiManager.Models.MegamiModels.Megami>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AerialMobility)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArmorDefense)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Design)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroundMobility)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LongRangeBattle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MediumRangeBattle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OperationTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SearchEnemy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Secret)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShortRangeBattle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AerialMobility)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArmorDefense)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Design)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroundMobility)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LongRangeBattle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MediumRangeBattle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OperationTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OwnerId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SearchEnemy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Secret)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShortRangeBattle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MegamiId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MegamiId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MegamiId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

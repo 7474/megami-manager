@@ -1,0 +1,155 @@
+@model MegamiManager.Models.MegamiModels.Megami
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>Megami</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="MegamiId" />
+        <div class="form-group">
+            <label asp-for="AerialMobility" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AerialMobility" class="form-control" />
+                <span asp-validation-for="AerialMobility" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArmorDefense" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArmorDefense" class="form-control" />
+                <span asp-validation-for="ArmorDefense" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Comment" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Comment" class="form-control" />
+                <span asp-validation-for="Comment" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CreatedAt" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CreatedAt" class="form-control" />
+                <span asp-validation-for="CreatedAt" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Design" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Design" class="form-control" />
+                <span asp-validation-for="Design" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="GroundMobility" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="GroundMobility" class="form-control" />
+                <span asp-validation-for="GroundMobility" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LongRangeBattle" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LongRangeBattle" class="form-control" />
+                <span asp-validation-for="LongRangeBattle" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MediumRangeBattle" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="MediumRangeBattle" class="form-control" />
+                <span asp-validation-for="MediumRangeBattle" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="OperationTime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="OperationTime" class="form-control" />
+                <span asp-validation-for="OperationTime" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="OwnerId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="OwnerId" class="form-control" />
+                <span asp-validation-for="OwnerId" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SearchEnemy" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SearchEnemy" class="form-control" />
+                <span asp-validation-for="SearchEnemy" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Secret" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Secret" class="form-control" />
+                <span asp-validation-for="Secret" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ShortRangeBattle" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ShortRangeBattle" class="form-control" />
+                <span asp-validation-for="ShortRangeBattle" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Type" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="UpdatedAt" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="UpdatedAt" class="form-control" />
+                <span asp-validation-for="UpdatedAt" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Weight" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Weight" class="form-control" />
+                <span asp-validation-for="Weight" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
