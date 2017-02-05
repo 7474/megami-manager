@@ -9,6 +9,11 @@ namespace MegamiManager.Models.AccountViewModels
     public class RegisterViewModel
     {
         [Required]
+        [StringLength(32)]
+        [Display(Name = "UserName")]
+        public string UserName { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

@@ -63,7 +63,7 @@ namespace MegamiManager.Data
                 builder.Entity(entity)
                     .Property(typeof(DateTimeOffset), "UpdatedAt")
                     .HasDefaultValueSql("SYSDATETIMEOFFSET()");
-                //
+                // XXX 全レコードに跳ねるワロタ
                 builder.Entity(entity)
                     .Property(typeof(DateTimeOffset), "UpdatedAt")
                     .HasComputedColumnSql("SYSDATETIMEOFFSET()");

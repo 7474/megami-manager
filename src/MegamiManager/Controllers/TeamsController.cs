@@ -8,22 +8,41 @@ using Microsoft.EntityFrameworkCore;
 using MegamiManager.Data;
 using MegamiManager.Models.MegamiModels;
 using Microsoft.AspNetCore.Authorization;
+using MegamiManager.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace MegamiManager.Controllers
 {
-    public class TeamsController : Controller
+    public class TeamsController : AbstractController
     {
         private readonly ApplicationDbContext _context;
 
-        public TeamsController(ApplicationDbContext context)
+        public TeamsController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            ILoggerFactory loggerFactory)
+            : base(userManager, loggerFactory)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Teams
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Teams.ToListAsync());
+            return View(await _context.Teams
+                .Include(x => x.Owner)
+                .ToListAsync());
+        }
+
+        [Authorize]
+        public async Task<IActionResult> MyIndex()
+        {
+            var user = await GetCurrentUserAsync();
+            return View(await _context.Teams
+                .Include(x => x.Owner)
+                .Where(x => x.OwnerId == user.Id)
+                .ToListAsync());
         }
 
         // GET: Teams/Details/5
@@ -34,7 +53,11 @@ namespace MegamiManager.Controllers
                 return NotFound();
             }
 
-            var team = await _context.Teams.SingleOrDefaultAsync(m => m.TeamId == id);
+            var team = await _context.Teams
+                .Include(x => x.Owner)
+                .Include(x => x.Members)
+                .ThenInclude(x => x.Megami)
+                .SingleOrDefaultAsync(m => m.TeamId == id);
             if (team == null)
             {
                 return NotFound();
@@ -55,10 +78,12 @@ namespace MegamiManager.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TeamId,Comment,CreatedAt,Description,Name,OwnerId,UpdatedAt")] Team team)
+        public async Task<IActionResult> Create(Team team)
         {
             if (ModelState.IsValid)
             {
+                var user = await GetCurrentUserAsync();
+                team.OwnerId = user.Id;
                 _context.Add(team);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -75,11 +100,20 @@ namespace MegamiManager.Controllers
                 return NotFound();
             }
 
-            var team = await _context.Teams.SingleOrDefaultAsync(m => m.TeamId == id);
+            var team = await _context.Teams
+                .Include(x => x.Owner)
+                .Include(x => x.Members)
+                .ThenInclude(x => x.Megami)
+                .SingleOrDefaultAsync(m => m.TeamId == id);
             if (team == null)
             {
                 return NotFound();
             }
+            var user = await GetCurrentUserAsync();
+            team.AssertOwn(user);
+            // XXX Ç»ÇÒÇ©Ç¢Ç¢ä¥Ç∂Ç…Ç±ÇÒÇ€Å[ÇÀÇ∆Ç…ÇµÇΩÇ¢Ç»Çü
+            ViewBag.Megamis = (await _context.Megami.Where(x => x.OwnerId == user.Id).ToListAsync())
+                .Where(x => !team.Members.Any(y => y.MegamiId == x.MegamiId)).ToList();
             return View(team);
         }
 
@@ -89,7 +123,7 @@ namespace MegamiManager.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TeamId,Comment,CreatedAt,Description,Name,OwnerId,UpdatedAt")] Team team)
+        public async Task<IActionResult> Edit(int id, Team team)
         {
             if (id != team.TeamId)
             {
@@ -98,9 +132,15 @@ namespace MegamiManager.Controllers
 
             if (ModelState.IsValid)
             {
+                var teamExist = await _context.Teams.SingleOrDefaultAsync(m => m.TeamId == id);
+                teamExist.AssertOwn(await GetCurrentUserAsync());
                 try
                 {
-                    _context.Update(team);
+                    // XXX ãlÇﬂë÷Ç¶Ç‡ÇµÇ≠ÇÕÇ‡Ç¡Ç∆óvóÃÇÊÇ≠åüèÿ
+                    teamExist.Name = team.Name;
+                    teamExist.Description = team.Description;
+                    teamExist.Comment = team.Comment;
+                    _context.Update(teamExist);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -119,6 +159,58 @@ namespace MegamiManager.Controllers
             return View(team);
         }
 
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddMember(int? id, int? megamiId)
+        {
+            var team = await _context.Teams.SingleOrDefaultAsync(m => m.TeamId == id);
+            if (team == null)
+            {
+                return NotFound();
+            }
+            var megami = await _context.Megami.SingleOrDefaultAsync(m => m.MegamiId == megamiId);
+            if (megami == null)
+            {
+                return NotFound();
+            }
+            var user = await GetCurrentUserAsync();
+
+            team.AssertOwn(user);
+            megami.AssertOwn(user);
+
+            _context.Add(new MegamiTeam()
+            {
+                TeamId = id.Value,
+                MegamiId = megamiId.Value
+            });
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Edit", new { id = id });
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveMember(int? id, int? megamiId)
+        {
+            var megamiTeam = await _context.MegamiTeam
+                .Include(x => x.Team)
+                .Include(x => x.Megami)
+                .SingleOrDefaultAsync(m => m.TeamId == id && m.MegamiId == megamiId);
+            if (megamiTeam == null)
+            {
+                return NotFound();
+            }
+            var user = await GetCurrentUserAsync();
+
+            megamiTeam.Team.AssertOwn(user);
+            megamiTeam.Megami.AssertOwn(user);
+
+            _context.Remove(megamiTeam);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Edit", new { id = id });
+        }
+
         // GET: Teams/Delete/5
         [Authorize]
         public async Task<IActionResult> Delete(int? id)
@@ -133,6 +225,7 @@ namespace MegamiManager.Controllers
             {
                 return NotFound();
             }
+            team.AssertOwn(await GetCurrentUserAsync());
 
             return View(team);
         }
@@ -144,6 +237,7 @@ namespace MegamiManager.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var team = await _context.Teams.SingleOrDefaultAsync(m => m.TeamId == id);
+            team.AssertOwn(await GetCurrentUserAsync());
             _context.Teams.Remove(team);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

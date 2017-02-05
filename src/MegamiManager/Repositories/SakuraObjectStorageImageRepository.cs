@@ -81,14 +81,26 @@ namespace MegamiManager.Repositories
             };
         }
 
-        public Task Update(Image image, IFormFile file)
+        public async Task Update(Image image, IFormFile file)
         {
-            throw new NotImplementedException();
+            ValidateFile(file);
+            var request = new PutObjectRequest()
+            {
+                InputStream = file.OpenReadStream(),
+                BucketName = bucketName,
+                Key = image.Key
+            };
+            var response = await client.PutObjectAsync(request);
         }
 
-        public Task Delete(Image image)
+        public async Task Delete(Image image)
         {
-            throw new NotImplementedException();
+            var request = new DeleteObjectRequest()
+            {
+                BucketName = bucketName,
+                Key = image.Key
+            };
+            var response = await client.DeleteObjectAsync(request);
         }
 
         public Task CreateThumbnail(Image image)

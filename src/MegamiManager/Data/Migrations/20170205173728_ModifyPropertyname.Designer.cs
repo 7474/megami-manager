@@ -8,9 +8,10 @@ using MegamiManager.Data;
 namespace MegamiManager.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170205173728_ModifyPropertyname")]
+    partial class ModifyPropertyname
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -81,7 +82,9 @@ namespace MegamiManager.Data.Migrations
                     b.Property<string>("Name")
                         .HasAnnotation("MaxLength", 256);
 
-                    b.Property<string>("OwnerId");
+                    b.Property<int>("OwnerId");
+
+                    b.Property<string>("OwnerId1");
 
                     b.Property<string>("PrivateThumbnailUri")
                         .HasAnnotation("MaxLength", 512);
@@ -107,7 +110,7 @@ namespace MegamiManager.Data.Migrations
 
                     b.HasKey("ImageId");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("OwnerId1");
 
                     b.ToTable("Images");
                 });
@@ -149,7 +152,9 @@ namespace MegamiManager.Data.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 64);
 
-                    b.Property<string>("OwnerId");
+                    b.Property<int>("OwnerId");
+
+                    b.Property<string>("OwnerId1");
 
                     b.Property<int>("Recon");
 
@@ -171,7 +176,7 @@ namespace MegamiManager.Data.Migrations
 
                     b.HasKey("MegamiId");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("OwnerId1");
 
                     b.ToTable("Megami");
                 });
@@ -247,7 +252,9 @@ namespace MegamiManager.Data.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 64);
 
-                    b.Property<string>("OwnerId");
+                    b.Property<int>("OwnerId");
+
+                    b.Property<string>("OwnerId1");
 
                     b.Property<byte[]>("Timestamp")
                         .IsConcurrencyToken()
@@ -259,7 +266,7 @@ namespace MegamiManager.Data.Migrations
 
                     b.HasKey("TeamId");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("OwnerId1");
 
                     b.ToTable("Teams");
                 });
@@ -401,14 +408,14 @@ namespace MegamiManager.Data.Migrations
                 {
                     b.HasOne("MegamiManager.Models.ApplicationUser", "Owner")
                         .WithMany()
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId1");
                 });
 
             modelBuilder.Entity("MegamiManager.Models.MegamiModels.Megami", b =>
                 {
                     b.HasOne("MegamiManager.Models.ApplicationUser", "Owner")
                         .WithMany()
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId1");
                 });
 
             modelBuilder.Entity("MegamiManager.Models.MegamiModels.MegamiTag", b =>
@@ -441,7 +448,7 @@ namespace MegamiManager.Data.Migrations
                 {
                     b.HasOne("MegamiManager.Models.ApplicationUser", "Owner")
                         .WithMany()
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId1");
                 });
 
             modelBuilder.Entity("MegamiManager.Models.MegamiModels.Weapon", b =>

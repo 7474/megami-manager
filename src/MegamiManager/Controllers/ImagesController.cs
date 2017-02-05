@@ -21,6 +21,16 @@ namespace MegamiManager.Controllers
             _context = context;
         }
 
+        private static SakuraObjectStorageImageRepository GetRepository()
+        {
+            // XXX DI
+            return new SakuraObjectStorageImageRepository(
+                    "megami-device",
+                    "megami-device",
+                    "xxx"
+                );
+        }
+
         // GET: Images
         public async Task<IActionResult> Index()
         {
@@ -58,24 +68,11 @@ namespace MegamiManager.Controllers
         //        public async Task<IActionResult> Create([Bind("ImageId,CreatedAt,Name,OwnerId,PrivateThumbnailUri,PrivateUri,PublicThumbnailUri,PublicUri,Timestamp,UpdatedAt")] Image image)
         public async Task<IActionResult> Create(IFormFile file)
         {
-            // XXX DI
-            var imageRepository = new SakuraObjectStorageImageRepository(
-                    "megami-device",
-                    "megami-device",
-                    "xxx"
-                );
+            var imageRepository = GetRepository();
             var image = await imageRepository.Create(file);
             _context.Add(image);
             await _context.SaveChangesAsync();
             return RedirectToAction("Details", new { id = image.ImageId });
-
-            //if (ModelState.IsValid)
-            //{
-            //    _context.Add(image);
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction("Index");
-            //}
-            //return View(image);
         }
 
         // GET: Images/Edit/5
@@ -106,11 +103,15 @@ namespace MegamiManager.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(image);
+                    var imageExist = await _context.Images.SingleOrDefaultAsync(x => x.ImageId == id);
+                    imageExist.Name = image.Name;
+                    var imageRepository = GetRepository();
+                    await imageRepository.Update(imageExist, file);
+                    _context.Update(imageExist);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -152,6 +153,8 @@ namespace MegamiManager.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var image = await _context.Images.SingleOrDefaultAsync(m => m.ImageId == id);
+            var imageRepository = GetRepository();
+            await imageRepository.Delete(image);
             _context.Images.Remove(image);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

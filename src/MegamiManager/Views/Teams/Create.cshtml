@@ -12,27 +12,6 @@
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Comment" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Comment" class="form-control" />
-                <span asp-validation-for="Comment" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="CreatedAt" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Description" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
             <label asp-for="Name" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="Name" class="form-control" />
@@ -40,17 +19,17 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="OwnerId" class="col-md-2 control-label"></label>
+            <label asp-for="Description" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="OwnerId" class="form-control" />
-                <span asp-validation-for="OwnerId" class="text-danger" />
+                <textarea asp-for="Description" class="form-control" ></textarea>
+                <span asp-validation-for="Description" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="UpdatedAt" class="col-md-2 control-label"></label>
+            <label asp-for="Comment" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="UpdatedAt" class="form-control" />
-                <span asp-validation-for="UpdatedAt" class="text-danger" />
+                <textarea asp-for="Comment" class="form-control" ></textarea>
+                <span asp-validation-for="Comment" class="text-danger" />
             </div>
         </div>
         <div class="form-group">

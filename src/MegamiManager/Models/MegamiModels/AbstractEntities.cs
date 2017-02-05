@@ -17,7 +17,20 @@ namespace MegamiManager.Models.MegamiModels
 
     public abstract class OwnableEntity : AbstractEntity
     {
-        public int OwnerId { get; set; }
+        public string OwnerId { get; set; }
         public ApplicationUser Owner { get; set; }
+
+        public bool IsOwner(ApplicationUser user)
+        {
+            return OwnerId == user.Id;
+        }
+        public void AssertOwn(ApplicationUser user)
+        {
+            if (!IsOwner(user))
+            {
+                // XXX
+                throw new InvalidOperationException();
+            }
+        }
     }
 }

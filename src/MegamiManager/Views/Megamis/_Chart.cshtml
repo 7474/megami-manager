@@ -1,0 +1,290 @@
+﻿<style type="text/css">
+    @@font-face {
+        font-family: 'DSEG7Classic';
+        src: url(./images/DSEG7Classic-Regular.woff);
+    }
+
+    .chart-container {
+        float: left;
+        position: relative;
+        background-color: #ccc;
+        width: 448px;
+        height: 408px;
+    }
+
+    .chart-content {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .chart-body {
+        margin: 42px 0 0 42px;
+        padding: 0;
+        width: 364px;
+        height: 364px;
+    }
+
+    .chart-background {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .chart-total {
+        position: absolute;
+        margin: 15px 0 0 345px;
+        text-align: right;
+        background-color: #333;
+        color: #f0f0f0;
+        font-family: DSEG7Classic;
+        font-size: 20px;
+        opacity: 0.8;
+        width: 64px;
+        height: 20px;
+    }
+</style>
+<div>
+    <div class="chart-container">
+        <div class="chart-background">
+            <img id="chart-background-001" crossorigin="anonymous" src="./images/battle-point-background.png" />
+        </div>
+        <div class="chart-content">
+            <div class="chart-body">
+                <canvas id="chart-001" class="chart"></canvas>
+            </div>
+        </div>
+        <div id="chart-total-001" class="chart-total"></div>
+    </div>
+    <div style="clear: both;"></div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script>
+        //
+        var xxxOptions = {
+            drawChartLegend: true,
+            chartSize: {
+                width: 364,
+                height: 364,
+                top: 42,
+                left: 42
+            }
+        };
+        //
+        var inputForm = document.getElementById("chart-input-form");
+        var totalArea = document.getElementById("chart-total-001");
+        var chartElement = document.getElementById("chart-001");
+        var ctx = chartElement.getContext("2d");
+        var data = {
+            labels: [
+                "近距離戦闘", "中距離戦闘", "遠距離戦闘", "装甲・防御", "重量　　　",
+                "稼働時間　", "隠密　　　", "索敵　　　", "空中機動　", "地上機動　"],
+            datasets: [
+                {
+                    label: "MEGAMI's Battle Points",
+                    backgroundColor: "rgba(255,0,0,0.8)",
+                    borderColor: "rgba(255,0,0,1)",
+                    borderWidth: 1,
+                    pointBackgroundColor: "rgba(255,0,0,0)",
+                    pointBorderColor: "rgba(255,0,0,0)",
+                    pointHoverBackgroundColor: "rgba(255,0,0,1)",
+                    pointHoverBorderColor: "rgba(255,0,0,1)",
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                }
+            ]
+        };
+        var options = {
+            responsive: true,
+            padding: 0,
+            pointLabelFontSize: 20,
+            title: {
+                display: false
+            },
+            legend: {
+                display: false,
+                labels: {
+                    fontColor: "#ffa024"
+                }
+            }, scale: {
+                display: false,
+                gridLines: {
+                    display: false,
+                    drawBorder: false,
+                    color: ["rgba(0, 0, 0, 0)", "#ffa024", "#ffa024", "#ffa024", "#ffa024", "#ffa024", "#ffa024", "#ffa024", "#ffa024", "#ffa024", "#ffa024", "#ffa024"],
+                    lineWidth: [0, 0.8, 0.2, 0.2, 0.2, 0.2, 0.8, 0.2, 0.2, 0.2, 0.2, 0.8]
+                },
+                angleLines: {
+                    color: "#ff0000",
+                    lineWidth: 0.3
+                },
+                scaleLabel: {
+                    display: false,
+                    fontColor: "#ffa024"
+                },
+                pointLabels: {
+                    display: false,
+                    fontColor: "#ffa024"
+                },
+                ticks: {
+                    display: false,
+                    max: 100,
+                    min: -15,
+                    stepSize: 10,
+                    fontColor: "#ffa024"
+                },
+                beforeFit: function (scale) {
+                },
+                afterFit: function (scale) {
+                    // XXX この辺は公式に載っているグラフ画像にピタリさせるための設定
+                    scale.drawingArea = scale.height / 2;
+                    scale.xCenter = scale.width / 2;
+                    scale.yCenter = scale.height / 2;
+                }
+            }
+        };
+        if (xxxOptions.drawChartLegend) {
+            options.scale.display = true;
+            options.scale.gridLines.display = true;
+            options.scale.gridLines.drawBorder = true;
+            options.scale.scaleLabel.display = true;
+            options.scale.pointLabels.display = true;
+            options.scale.beforeFit = function (scale) {
+            };
+            options.scale.afterFit = function (scale) {
+            };
+            chartElement.width = xxxOptions.chartSize.width;
+            chartElement.height = xxxOptions.chartSize.height;
+        }
+        var myRadarChart = new Chart(ctx, {
+            type: 'radar',
+            data: data,
+            options: options
+        });
+        if (xxxOptions.drawChartLegend) {
+            // XXX 何かエレメントスタイルの値が変になる
+            ctx.canvas.width = xxxOptions.chartSize.width;
+            ctx.canvas.height = xxxOptions.chartSize.height;
+        }
+        var currentTotalPt = 0;
+        var targetTotalPt = 0;
+        var setTotalPtInternal = function (totalPt) {
+            // XXX Font image
+            currentTotalPt = totalPt;
+            totalArea.textContent = ("0000" + totalPt).slice(-4);
+        }
+        var setTotalPt = function (totalPt, animate, animeSpeed) {
+            animeSpeed = animeSpeed | 10;
+            targetTotalPt = totalPt;
+            if (animate && targetTotalPt != currentTotalPt) {
+                var diff = targetTotalPt > currentTotalPt ? 1 : -1;
+                setTotalPtInternal(currentTotalPt + diff);
+                if (targetTotalPt != currentTotalPt) {
+                    setTimeout(function () {
+                        setTotalPt(totalPt, animate, animeSpeed);
+                    }, animeSpeed);
+                }
+            } else {
+                setTotalPtInternal(totalPt);
+            }
+        };
+        var getTotalPt = function () {
+            var totalPt = 0;
+            Array.prototype.forEach.call(document.getElementsByClassName("chart-input-params"), function (x) {
+                var value = x.value * 1;
+                totalPt += value;
+            });
+            return totalPt;
+        }
+        var updateData = function () {
+            var newData = [];
+            var totalPt = getTotalPt();
+            Array.prototype.forEach.call(document.getElementsByClassName("chart-input-params"), function (x) {
+                var value = x.value * 1;
+                newData.push(value);
+            });
+            data.datasets[0].data = newData;
+            myRadarChart.update();
+            setTotalPt(totalPt, true);
+            saveUrlParameter(newData)
+        };
+        var saveUrlParameter = function saveUrlParameter(params) {
+            var urlParams = "params=" + params.join(",");
+            window.location.hash = urlParams;
+        };
+        var loadUrlParameter = function () {
+            var params = getParameterByName("params");
+            if (params) {
+                var values = params.split(",");
+                var inputs = document.getElementsByClassName("chart-input-params");
+                for (var i = 0; i < values.length && i < inputs.length; i++) {
+                    inputs.item(i).value = values[i];
+                }
+            }
+            updateData();
+        };
+        var contextToImage = function (context) {
+            var image = new Image;
+            image.setAttribute('crossOrigin', 'anonymous');
+            image.src = context.canvas.toDataURL();
+            return image;
+        };
+        var createMixedImate = function (e) {
+            // 動的に色々合成した要素にする
+            // XXX 後から合成は筋が悪い気はする
+            var chartElement = document.getElementById("chart-001");
+            var background = document.getElementById("chart-background-001");
+            var targetElement = document.getElementById("chart-output-image");
+            // XXX サイズ、位置を一元管理したい
+            var mixCtx = document.createElement('canvas').getContext('2d');
+            mixCtx.canvas.width = 448;
+            mixCtx.canvas.height = 408;
+            mixCtx.canvas.setAttribute('crossOrigin', 'anonymous');
+            mixCtx.drawImage(background, 0, 0);
+            mixCtx.drawImage(contextToImage(ctx), xxxOptions.chartSize.left, xxxOptions.chartSize.top);
+            var totalPt = getTotalPt();
+            var totalPtText = ("0000" + totalPt).slice(-4);
+            mixCtx.font = "20px DSEG7Classic";
+            mixCtx.fillStyle = "#f0f0f0";
+            mixCtx.textBaseline = "top";
+            mixCtx.textAlign = "right";
+            mixCtx.fillText(totalPtText, 345 + 64, 15);
+            targetElement.src = mixCtx.canvas.toDataURL();
+            if (selectPhoto.files.length == 0) {
+                return;
+            }
+            var file = selectPhoto.files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var dataUrl = e.target.result;
+                var photoImage = new Image();
+                photoImage.onload = function () {
+                    var photoSize = 400;
+                    var photoMargin = 4;
+                    var photoCtx = document.createElement('canvas').getContext('2d');
+                    photoCtx.canvas.width = 448 + photoSize + photoMargin * 2;
+                    photoCtx.canvas.height = 408;
+                    photoCtx.canvas.setAttribute('crossOrigin', 'anonymous');
+                    photoCtx.fillStyle = "#333";
+                    photoCtx.fillRect(0, 0, photoCtx.canvas.width, photoCtx.canvas.height);
+                    photoCtx.drawImage(contextToImage(mixCtx), photoSize + photoMargin * 2, 0);
+                    var photoInsertWidth = photoSize;
+                    var photoInsertHeight = photoSize;
+                    if (photoImage.width > photoImage.height) {
+                        photoInsertHeight = photoSize * photoImage.height / photoImage.width;
+                    } else if (photoImage.width < photoImage.height) {
+                        photoInsertWidth = photoSize * photoImage.width / photoImage.height;
+                    }
+                    photoCtx.drawImage(photoImage,
+                        photoMargin + ((photoSize - photoInsertWidth) / 2),
+                        photoMargin + ((photoSize - photoInsertHeight) / 2),
+                        photoInsertWidth, photoInsertHeight);
+                    targetElement.src = photoCtx.canvas.toDataURL();
+                };
+                photoImage.src = dataUrl;
+            };
+            reader.readAsDataURL(file);
+        };
+        inputForm.onchange = updateData;
+        // XXX wait load
+        updateData();
+    </script>
+</div>

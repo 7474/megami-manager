@@ -11,28 +11,8 @@
         <h4>Team</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="TeamId" />
-        <div class="form-group">
-            <label asp-for="Comment" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Comment" class="form-control" />
-                <span asp-validation-for="Comment" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="CreatedAt" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Description" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger" />
-            </div>
-        </div>
+        <input type="hidden" asp-for="TeamId" />
+        <input type="hidden" asp-for="Timestamp" />
         <div class="form-group">
             <label asp-for="Name" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -41,22 +21,57 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="OwnerId" class="col-md-2 control-label"></label>
+            <label asp-for="Description" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="OwnerId" class="form-control" />
-                <span asp-validation-for="OwnerId" class="text-danger" />
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="UpdatedAt" class="col-md-2 control-label"></label>
+            <label asp-for="Comment" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="UpdatedAt" class="form-control" />
-                <span asp-validation-for="UpdatedAt" class="text-danger" />
+                <textarea asp-for="Comment" class="form-control"></textarea>
+                <span asp-validation-for="Comment" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<h4>Team Members</h4>
+<hr />
+<ul>
+    @foreach (var item in Model.Members)
+    {
+        <li>
+            @item.Megami.Name
+            <form asp-action="RemoveMember">
+                <input type="hidden" name="id" value="@item.TeamId" />
+                <input type="hidden" name="megamiId" value="@item.MegamiId" />
+                <input type="submit" value="Remove" class="btn btn-danger" />
+            </form>
+        </li>
+    }
+</ul>
+
+<form asp-action="AddMember">
+    <div class="form-horizontal">
+        <h4>Add Team Member</h4>
+        <hr />
+        <input type="hidden" name="id" value="@Model.TeamId" />
+        <div class="form-group">
+            <label asp-for="Members" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select name="megamiId" asp-items="@(new SelectList(ViewBag.Megamis, "MegamiId", "Name"))"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add" class="btn btn-default" />
             </div>
         </div>
     </div>

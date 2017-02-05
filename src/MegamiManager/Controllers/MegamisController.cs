@@ -8,22 +8,41 @@ using Microsoft.EntityFrameworkCore;
 using MegamiManager.Data;
 using MegamiManager.Models.MegamiModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using MegamiManager.Models;
 
 namespace MegamiManager.Controllers
 {
-    public class MegamisController : Controller
+    public class MegamisController : AbstractController
     {
         private readonly ApplicationDbContext _context;
 
-        public MegamisController(ApplicationDbContext context)
+        public MegamisController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            ILoggerFactory loggerFactory)
+            : base(userManager, loggerFactory)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Megamis
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Megami.ToListAsync());
+            return View(await _context.Megami
+                .Include(x => x.Owner)
+                .ToListAsync());
+        }
+
+        [Authorize]
+        public async Task<IActionResult> MyIndex()
+        {
+            var user = await GetCurrentUserAsync();
+            return View(await _context.Megami
+                .Include(x => x.Owner)
+                .Where(x => x.OwnerId == user.Id)
+                .ToListAsync());
         }
 
         // GET: Megamis/Details/5
@@ -56,10 +75,13 @@ namespace MegamiManager.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MegamiId,AerialMobility,ArmorDefense,Comment,CreatedAt,Description,Design,GroundMobility,LongRangeBattle,MediumRangeBattle,Name,OperationTime,OwnerId,SearchEnemy,Secret,ShortRangeBattle,Type,UpdatedAt,Weight")] Megami megami)
+        //public async Task<IActionResult> Create([Bind("MegamiId,AerialMobility,ArmorDefense,Comment,CreatedAt,Description,Design,GroundMobility,LongRangeBattle,MediumRangeBattle,Name,OperationTime,OwnerId,SearchEnemy,Secret,ShortRangeBattle,Type,UpdatedAt,Weight")] Megami megami)
+        public async Task<IActionResult> Create(Megami megami)
         {
             if (ModelState.IsValid)
             {
+                var user = await GetCurrentUserAsync();
+                megami.OwnerId = user.Id;
                 _context.Add(megami);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -81,6 +103,7 @@ namespace MegamiManager.Controllers
             {
                 return NotFound();
             }
+            megami.AssertOwn(await GetCurrentUserAsync());
             return View(megami);
         }
 
@@ -90,7 +113,7 @@ namespace MegamiManager.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MegamiId,AerialMobility,ArmorDefense,Comment,CreatedAt,Description,Design,GroundMobility,LongRangeBattle,MediumRangeBattle,Name,OperationTime,OwnerId,SearchEnemy,Secret,ShortRangeBattle,Type,UpdatedAt,Weight")] Megami megami)
+        public async Task<IActionResult> Edit(int id, Megami megami)
         {
             if (id != megami.MegamiId)
             {
@@ -99,9 +122,16 @@ namespace MegamiManager.Controllers
 
             if (ModelState.IsValid)
             {
+                var megamiExist = await _context.Megami.SingleOrDefaultAsync(m => m.MegamiId == id);
+                megamiExist.AssertOwn(await GetCurrentUserAsync());
                 try
                 {
-                    _context.Update(megami);
+                    // XXX ãlÇﬂë÷Ç¶Ç‡ÇµÇ≠ÇÕÇ‡Ç¡Ç∆óvóÃÇÊÇ≠åüèÿ
+                    // TryUpdateModel Ç∆ïπópÅH
+                    //                 if (TryUpdateModel(studentToUpdate, "",
+                    //new string[] { "LastName", "FirstMidName", "EnrollmentDate" }))
+                    //                 {
+                    _context.Update(megamiExist);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -134,6 +164,7 @@ namespace MegamiManager.Controllers
             {
                 return NotFound();
             }
+            megami.AssertOwn(await GetCurrentUserAsync());
 
             return View(megami);
         }
@@ -145,6 +176,7 @@ namespace MegamiManager.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var megami = await _context.Megami.SingleOrDefaultAsync(m => m.MegamiId == id);
+            megami.AssertOwn(await GetCurrentUserAsync());
             _context.Megami.Remove(megami);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
