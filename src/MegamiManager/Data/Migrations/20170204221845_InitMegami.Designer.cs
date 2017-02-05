@@ -8,7 +8,7 @@ using MegamiManager.Data;
 namespace MegamiManager.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170204170331_InitMegami")]
+    [Migration("20170204221845_InitMegami")]
     partial class InitMegami
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,6 +66,51 @@ namespace MegamiManager.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("MegamiManager.Models.MegamiModels.Image", b =>
+                {
+                    b.Property<int>("ImageId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<string>("Name")
+                        .HasAnnotation("MaxLength", 256);
+
+                    b.Property<int>("OwnerId");
+
+                    b.Property<string>("OwnerId1");
+
+                    b.Property<string>("PrivateThumbnailUri")
+                        .HasAnnotation("MaxLength", 512);
+
+                    b.Property<string>("PrivateUri")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 512);
+
+                    b.Property<string>("PublicThumbnailUri")
+                        .HasAnnotation("MaxLength", 512);
+
+                    b.Property<string>("PublicUri")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 512);
+
+                    b.Property<byte[]>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasComputedColumnSql("SYSDATETIMEOFFSET()");
+
+                    b.HasKey("ImageId");
+
+                    b.HasIndex("OwnerId1");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("MegamiManager.Models.MegamiModels.Megami", b =>
                 {
                     b.Property<int>("MegamiId")
@@ -78,7 +123,9 @@ namespace MegamiManager.Data.Migrations
                     b.Property<string>("Comment")
                         .HasAnnotation("MaxLength", 1000);
 
-                    b.Property<DateTimeOffset>("CreatedAt");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
 
                     b.Property<string>("Description")
                         .HasAnnotation("MaxLength", 1000);
@@ -109,11 +156,17 @@ namespace MegamiManager.Data.Migrations
 
                     b.Property<int>("ShortRangeBattle");
 
+                    b.Property<byte[]>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 64);
 
-                    b.Property<DateTimeOffset>("UpdatedAt");
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasComputedColumnSql("SYSDATETIMEOFFSET()");
 
                     b.Property<int>("Weight");
 
@@ -165,6 +218,10 @@ namespace MegamiManager.Data.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 32);
 
+                    b.Property<byte[]>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
                     b.Property<DateTimeOffset>("UpdatedAt");
 
                     b.HasKey("TagId");
@@ -180,7 +237,9 @@ namespace MegamiManager.Data.Migrations
                     b.Property<string>("Comment")
                         .HasAnnotation("MaxLength", 1000);
 
-                    b.Property<DateTimeOffset>("CreatedAt");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
 
                     b.Property<string>("Description")
                         .HasAnnotation("MaxLength", 1000);
@@ -193,7 +252,13 @@ namespace MegamiManager.Data.Migrations
 
                     b.Property<string>("OwnerId1");
 
-                    b.Property<DateTimeOffset>("UpdatedAt");
+                    b.Property<byte[]>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasComputedColumnSql("SYSDATETIMEOFFSET()");
 
                     b.HasKey("TeamId");
 
@@ -214,6 +279,10 @@ namespace MegamiManager.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 64);
+
+                    b.Property<byte[]>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<DateTimeOffset>("UpdatedAt");
 
@@ -329,6 +398,13 @@ namespace MegamiManager.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("MegamiManager.Models.MegamiModels.Image", b =>
+                {
+                    b.HasOne("MegamiManager.Models.ApplicationUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId1");
                 });
 
             modelBuilder.Entity("MegamiManager.Models.MegamiModels.Megami", b =>

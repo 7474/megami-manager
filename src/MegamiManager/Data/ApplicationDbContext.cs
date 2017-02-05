@@ -47,9 +47,32 @@ namespace MegamiManager.Data
                 .HasOne(mt => mt.Megami)
                 .WithMany(m => m.Teams)
                 .HasForeignKey(mt => mt.MegamiId);
+
+            //
+            var entities = new Type[] {
+               typeof(Megami),
+               typeof(Team),
+               typeof(Image)
+            };
+            foreach (var entity in entities)
+            {
+                // XXX もしかしなくてもこれはSQL Server限定なのでは、、、？
+                builder.Entity(entity)
+                    .Property(typeof(DateTimeOffset), "CreatedAt")
+                    .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+                builder.Entity(entity)
+                    .Property(typeof(DateTimeOffset), "UpdatedAt")
+                    .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+                //
+                builder.Entity(entity)
+                    .Property(typeof(DateTimeOffset), "UpdatedAt")
+                    .HasComputedColumnSql("SYSDATETIMEOFFSET()");
+            }
         }
 
         public DbSet<Team> Teams { get; set; }
         public DbSet<Megami> Megami { get; set; }
+        public DbSet<MegamiTeam> MegamiTeam { get; set; }
+        public DbSet<Image> Images { get; set; }
     }
 }

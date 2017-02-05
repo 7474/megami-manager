@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet-MegamiManager-4e525fa9-ea49-4904-9fa5-ed8f45b1e1d9",
 
   "dependencies": {
@@ -41,10 +41,11 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc":  {
+    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    }
+    },
+    "AWSSDK.S3": "3.3.5.3"
   },
 
   "tools": {

@@ -7,26 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MegamiManager.Data;
 using MegamiManager.Models.MegamiModels;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using MegamiManager.Repositories;
 
 namespace MegamiManager.Controllers
 {
-    public class TeamsController : Controller
+    public class ImagesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public TeamsController(ApplicationDbContext context)
+        public ImagesController(ApplicationDbContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
-        // GET: Teams
+        // GET: Images
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Teams.ToListAsync());
+            return View(await _context.Images.ToListAsync());
         }
 
-        // GET: Teams/Details/5
+        // GET: Images/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,40 +35,50 @@ namespace MegamiManager.Controllers
                 return NotFound();
             }
 
-            var team = await _context.Teams.SingleOrDefaultAsync(m => m.TeamId == id);
-            if (team == null)
+            var image = await _context.Images.SingleOrDefaultAsync(m => m.ImageId == id);
+            if (image == null)
             {
                 return NotFound();
             }
 
-            return View(team);
+            return View(image);
         }
 
-        // GET: Teams/Create
+        // GET: Images/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Teams/Create
+        // POST: Images/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TeamId,Comment,CreatedAt,Description,Name,OwnerId,UpdatedAt")] Team team)
+        //        public async Task<IActionResult> Create([Bind("ImageId,CreatedAt,Name,OwnerId,PrivateThumbnailUri,PrivateUri,PublicThumbnailUri,PublicUri,Timestamp,UpdatedAt")] Image image)
+        public async Task<IActionResult> Create(IFormFile file)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(team);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View(team);
+            // XXX DI
+            var imageRepository = new SakuraObjectStorageImageRepository(
+                    "megami-device",
+                    "megami-device",
+                    "xxx"
+                );
+            var image = await imageRepository.Create(file);
+            _context.Add(image);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = image.ImageId });
+
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(image);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction("Index");
+            //}
+            //return View(image);
         }
 
-        // GET: Teams/Edit/5
-        [Authorize]
+        // GET: Images/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,23 +86,22 @@ namespace MegamiManager.Controllers
                 return NotFound();
             }
 
-            var team = await _context.Teams.SingleOrDefaultAsync(m => m.TeamId == id);
-            if (team == null)
+            var image = await _context.Images.SingleOrDefaultAsync(m => m.ImageId == id);
+            if (image == null)
             {
                 return NotFound();
             }
-            return View(team);
+            return View(image);
         }
 
-        // POST: Teams/Edit/5
+        // POST: Images/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TeamId,Comment,CreatedAt,Description,Name,OwnerId,UpdatedAt")] Team team)
+        public async Task<IActionResult> Edit(int id, [Bind("ImageId,Name,Timestamp")] Image image, IFormFile file)
         {
-            if (id != team.TeamId)
+            if (id != image.ImageId)
             {
                 return NotFound();
             }
@@ -100,12 +110,12 @@ namespace MegamiManager.Controllers
             {
                 try
                 {
-                    _context.Update(team);
+                    _context.Update(image);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TeamExists(team.TeamId))
+                    if (!ImageExists(image.ImageId))
                     {
                         return NotFound();
                     }
@@ -116,11 +126,10 @@ namespace MegamiManager.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(team);
+            return View(image);
         }
 
-        // GET: Teams/Delete/5
-        [Authorize]
+        // GET: Images/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -128,30 +137,29 @@ namespace MegamiManager.Controllers
                 return NotFound();
             }
 
-            var team = await _context.Teams.SingleOrDefaultAsync(m => m.TeamId == id);
-            if (team == null)
+            var image = await _context.Images.SingleOrDefaultAsync(m => m.ImageId == id);
+            if (image == null)
             {
                 return NotFound();
             }
 
-            return View(team);
+            return View(image);
         }
 
-        // POST: Teams/Delete/5
-        [Authorize]
+        // POST: Images/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var team = await _context.Teams.SingleOrDefaultAsync(m => m.TeamId == id);
-            _context.Teams.Remove(team);
+            var image = await _context.Images.SingleOrDefaultAsync(m => m.ImageId == id);
+            _context.Images.Remove(image);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool TeamExists(int id)
+        private bool ImageExists(int id)
         {
-            return _context.Teams.Any(e => e.TeamId == id);
+            return _context.Images.Any(e => e.ImageId == id);
         }
     }
 }

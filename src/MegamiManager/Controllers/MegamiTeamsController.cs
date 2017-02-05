@@ -11,22 +11,24 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MegamiManager.Controllers
 {
-    public class TeamsController : Controller
+    [Authorize]
+    public class MegamiTeamsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public TeamsController(ApplicationDbContext context)
+        public MegamiTeamsController(ApplicationDbContext context)
         {
             _context = context;    
         }
 
-        // GET: Teams
+        // GET: MegamiTeams
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Teams.ToListAsync());
+            var applicationDbContext = _context.MegamiTeam.Include(m => m.Megami).Include(m => m.Team);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Teams/Details/5
+        // GET: MegamiTeams/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,40 +36,42 @@ namespace MegamiManager.Controllers
                 return NotFound();
             }
 
-            var team = await _context.Teams.SingleOrDefaultAsync(m => m.TeamId == id);
-            if (team == null)
+            var megamiTeam = await _context.MegamiTeam.SingleOrDefaultAsync(m => m.TeamId == id);
+            if (megamiTeam == null)
             {
                 return NotFound();
             }
 
-            return View(team);
+            return View(megamiTeam);
         }
 
-        // GET: Teams/Create
+        // GET: MegamiTeams/Create
         public IActionResult Create()
         {
+            ViewData["MegamiId"] = new SelectList(_context.Megami, "MegamiId", "Design");
+            ViewData["TeamId"] = new SelectList(_context.Teams, "TeamId", "Name");
             return View();
         }
 
-        // POST: Teams/Create
+        // POST: MegamiTeams/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TeamId,Comment,CreatedAt,Description,Name,OwnerId,UpdatedAt")] Team team)
+        public async Task<IActionResult> Create([Bind("TeamId,MegamiId")] MegamiTeam megamiTeam)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(team);
+                _context.Add(megamiTeam);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(team);
+            ViewData["MegamiId"] = new SelectList(_context.Megami, "MegamiId", "Design", megamiTeam.MegamiId);
+            ViewData["TeamId"] = new SelectList(_context.Teams, "TeamId", "Name", megamiTeam.TeamId);
+            return View(megamiTeam);
         }
 
-        // GET: Teams/Edit/5
-        [Authorize]
+        // GET: MegamiTeams/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,23 +79,24 @@ namespace MegamiManager.Controllers
                 return NotFound();
             }
 
-            var team = await _context.Teams.SingleOrDefaultAsync(m => m.TeamId == id);
-            if (team == null)
+            var megamiTeam = await _context.MegamiTeam.SingleOrDefaultAsync(m => m.TeamId == id);
+            if (megamiTeam == null)
             {
                 return NotFound();
             }
-            return View(team);
+            ViewData["MegamiId"] = new SelectList(_context.Megami, "MegamiId", "Design", megamiTeam.MegamiId);
+            ViewData["TeamId"] = new SelectList(_context.Teams, "TeamId", "Name", megamiTeam.TeamId);
+            return View(megamiTeam);
         }
 
-        // POST: Teams/Edit/5
+        // POST: MegamiTeams/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TeamId,Comment,CreatedAt,Description,Name,OwnerId,UpdatedAt")] Team team)
+        public async Task<IActionResult> Edit(int id, [Bind("TeamId,MegamiId")] MegamiTeam megamiTeam)
         {
-            if (id != team.TeamId)
+            if (id != megamiTeam.TeamId)
             {
                 return NotFound();
             }
@@ -100,12 +105,12 @@ namespace MegamiManager.Controllers
             {
                 try
                 {
-                    _context.Update(team);
+                    _context.Update(megamiTeam);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TeamExists(team.TeamId))
+                    if (!MegamiTeamExists(megamiTeam.TeamId))
                     {
                         return NotFound();
                     }
@@ -116,11 +121,12 @@ namespace MegamiManager.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(team);
+            ViewData["MegamiId"] = new SelectList(_context.Megami, "MegamiId", "Design", megamiTeam.MegamiId);
+            ViewData["TeamId"] = new SelectList(_context.Teams, "TeamId", "Name", megamiTeam.TeamId);
+            return View(megamiTeam);
         }
 
-        // GET: Teams/Delete/5
-        [Authorize]
+        // GET: MegamiTeams/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -128,30 +134,29 @@ namespace MegamiManager.Controllers
                 return NotFound();
             }
 
-            var team = await _context.Teams.SingleOrDefaultAsync(m => m.TeamId == id);
-            if (team == null)
+            var megamiTeam = await _context.MegamiTeam.SingleOrDefaultAsync(m => m.TeamId == id);
+            if (megamiTeam == null)
             {
                 return NotFound();
             }
 
-            return View(team);
+            return View(megamiTeam);
         }
 
-        // POST: Teams/Delete/5
-        [Authorize]
+        // POST: MegamiTeams/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var team = await _context.Teams.SingleOrDefaultAsync(m => m.TeamId == id);
-            _context.Teams.Remove(team);
+            var megamiTeam = await _context.MegamiTeam.SingleOrDefaultAsync(m => m.TeamId == id);
+            _context.MegamiTeam.Remove(megamiTeam);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool TeamExists(int id)
+        private bool MegamiTeamExists(int id)
         {
-            return _context.Teams.Any(e => e.TeamId == id);
+            return _context.MegamiTeam.Any(e => e.TeamId == id);
         }
     }
 }

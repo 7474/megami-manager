@@ -10,6 +10,34 @@ namespace MegamiManager.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    ImageId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
+                    Name = table.Column<string>(maxLength: 256, nullable: true),
+                    OwnerId = table.Column<int>(nullable: false),
+                    OwnerId1 = table.Column<string>(nullable: true),
+                    PrivateThumbnailUri = table.Column<string>(maxLength: 512, nullable: true),
+                    PrivateUri = table.Column<string>(maxLength: 512, nullable: false),
+                    PublicThumbnailUri = table.Column<string>(maxLength: 512, nullable: true),
+                    PublicUri = table.Column<string>(maxLength: 512, nullable: false),
+                    Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
+                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false, computedColumnSql: "SYSDATETIMEOFFSET()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.ImageId);
+                    table.ForeignKey(
+                        name: "FK_Images_AspNetUsers_OwnerId1",
+                        column: x => x.OwnerId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Megami",
                 columns: table => new
                 {
@@ -18,7 +46,7 @@ namespace MegamiManager.Data.Migrations
                     AerialMobility = table.Column<int>(nullable: false),
                     ArmorDefense = table.Column<int>(nullable: false),
                     Comment = table.Column<string>(maxLength: 1000, nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
                     Design = table.Column<string>(maxLength: 64, nullable: false),
                     GroundMobility = table.Column<int>(nullable: false),
@@ -31,8 +59,9 @@ namespace MegamiManager.Data.Migrations
                     SearchEnemy = table.Column<int>(nullable: false),
                     Secret = table.Column<int>(nullable: false),
                     ShortRangeBattle = table.Column<int>(nullable: false),
+                    Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
                     Type = table.Column<string>(maxLength: 64, nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false, computedColumnSql: "SYSDATETIMEOFFSET()"),
                     Weight = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -54,6 +83,7 @@ namespace MegamiManager.Data.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CreatedAt = table.Column<DateTimeOffset>(nullable: false),
                     Name = table.Column<string>(maxLength: 32, nullable: false),
+                    Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
                     UpdatedAt = table.Column<DateTimeOffset>(nullable: false)
                 },
                 constraints: table =>
@@ -68,12 +98,13 @@ namespace MegamiManager.Data.Migrations
                     TeamId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Comment = table.Column<string>(maxLength: 1000, nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
                     OwnerId = table.Column<int>(nullable: false),
                     OwnerId1 = table.Column<string>(nullable: true),
-                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false)
+                    Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
+                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false, computedColumnSql: "SYSDATETIMEOFFSET()")
                 },
                 constraints: table =>
                 {
@@ -95,6 +126,7 @@ namespace MegamiManager.Data.Migrations
                     CreatedAt = table.Column<DateTimeOffset>(nullable: false),
                     MegamiId = table.Column<int>(nullable: true),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
+                    Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
                     UpdatedAt = table.Column<DateTimeOffset>(nullable: false)
                 },
                 constraints: table =>
@@ -157,6 +189,11 @@ namespace MegamiManager.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Images_OwnerId1",
+                table: "Images",
+                column: "OwnerId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Megami_OwnerId1",
                 table: "Megami",
                 column: "OwnerId1");
@@ -194,6 +231,9 @@ namespace MegamiManager.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Images");
+
             migrationBuilder.DropTable(
                 name: "MegamiTag");
 

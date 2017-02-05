@@ -30,9 +30,9 @@ namespace MegamiManager.Models.MegamiModels
         //"近距離戦闘", "中距離戦闘", "遠距離戦闘", "装甲・防御", "重量　　　",
         //"稼働時間　", "隠密　　　", "索敵　　　", "空中機動　", "地上機動　"],
         [Range(0, 100)]
-        public int ShortRangeBattle { get; set; }
+        public int CloseRangeBattle { get; set; }
         [Range(0, 100)]
-        public int MediumRangeBattle { get; set; }
+        public int MidRangeBattle { get; set; }
         [Range(0, 100)]
         public int LongRangeBattle { get; set; }
         [Range(0, 100)]
@@ -40,11 +40,11 @@ namespace MegamiManager.Models.MegamiModels
         [Range(0, 100)]
         public int Weight { get; set; }
         [Range(0, 100)]
-        public int OperationTime { get; set; }
+        public int ActiveTime { get; set; }
         [Range(0, 100)]
-        public int Secret { get; set; }
+        public int Stealth { get; set; }
         [Range(0, 100)]
-        public int SearchEnemy { get; set; }
+        public int Recon { get; set; }
         [Range(0, 100)]
         public int AerialMobility { get; set; }
         [Range(0, 100)]
@@ -58,14 +58,14 @@ namespace MegamiManager.Models.MegamiModels
             get
             {
                 return new int[] {
-                    ShortRangeBattle,
-                    MediumRangeBattle,
+                    CloseRangeBattle,
+                    MidRangeBattle,
                     LongRangeBattle,
                     ArmorDefense,
                     Weight,
-                    OperationTime,
-                    Secret,
-                    SearchEnemy,
+                    ActiveTime,
+                    Stealth,
+                    Recon,
                     AerialMobility,
                     GroundMobility
                 };
