@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using MegamiManager.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace MegamiManager.Controllers
 {
@@ -45,6 +46,48 @@ namespace MegamiManager.Controllers
                 .ToListAsync());
         }
 
+        [Authorize]
+        public async Task<IActionResult> AddImage(int? id)
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddImage(int? id, Image image, IFormFile file)
+        {
+            var megami = await _context.Megami.SingleOrDefaultAsync(m => m.MegamiId == id);
+            if (megami == null)
+            {
+                return NotFound();
+            }
+            megami.AssertOwn(await GetCurrentUserAsync());
+
+            var imageRepository = GetRepository();
+            var imageInsert = await imageRepository.Create(file);
+
+            imageInsert.Name = string.IsNullOrEmpty(image.Name) ? imageInsert.Name : image.Name;
+            imageInsert.Description = image.Description;
+            imageInsert.Comment = image.Comment;
+            _context.Add(imageInsert);
+            await _context.SaveChangesAsync();
+
+            var megamiImage = new MegamiImage()
+            {
+                MegamiId = megami.MegamiId,
+                ImageId = imageInsert.ImageId,
+                DisplayOrder = _context.MegamiImages.Where(x => x.MegamiId == megami.MegamiId).Max(x => x.DisplayOrder) + 1
+            };
+            _context.Add(megamiImage);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new
+            {
+                id = id
+            });
+        }
+
+
         // GET: Megamis/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -53,7 +96,9 @@ namespace MegamiManager.Controllers
                 return NotFound();
             }
 
-            var megami = await _context.Megami.SingleOrDefaultAsync(m => m.MegamiId == id);
+            var megami = await _context.Megami
+                .Include(x => x.Images).ThenInclude(x => x.Image)
+                .SingleOrDefaultAsync(m => m.MegamiId == id);
             if (megami == null)
             {
                 return NotFound();

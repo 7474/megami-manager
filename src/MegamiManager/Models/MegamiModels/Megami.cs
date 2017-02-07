@@ -25,6 +25,7 @@ namespace MegamiManager.Models.MegamiModels
         public string Comment { get; set; }
         public IList<MegamiTag> MegamiTags { get; set; }
         public IList<MegamiTeam> Teams { get; set; }
+        public IList<MegamiImage> Images { get; set; }
 
         #region Parameters
         //"近距離戦闘", "中距離戦闘", "遠距離戦闘", "装甲・防御", "重量　　　",

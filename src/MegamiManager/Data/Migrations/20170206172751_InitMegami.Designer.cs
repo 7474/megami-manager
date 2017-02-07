@@ -8,8 +8,8 @@ using MegamiManager.Data;
 namespace MegamiManager.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170205181056_ModifyPropertyname2")]
-    partial class ModifyPropertyname2
+    [Migration("20170206172751_InitMegami")]
+    partial class InitMegami
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -71,9 +71,18 @@ namespace MegamiManager.Data.Migrations
                     b.Property<int>("ImageId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Comment")
+                        .HasAnnotation("MaxLength", 1000);
+
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<string>("Description")
+                        .HasAnnotation("MaxLength", 1000);
+
+                    b.Property<string>("ImageType")
+                        .HasAnnotation("MaxLength", 32);
 
                     b.Property<string>("Key")
                         .IsRequired()
@@ -175,6 +184,35 @@ namespace MegamiManager.Data.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Megami");
+                });
+
+            modelBuilder.Entity("MegamiManager.Models.MegamiModels.MegamiImage", b =>
+                {
+                    b.Property<int>("MegamiId");
+
+                    b.Property<int>("ImageId");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int>("DisplayOrder");
+
+                    b.Property<byte[]>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasComputedColumnSql("SYSDATETIMEOFFSET()");
+
+                    b.HasKey("MegamiId", "ImageId");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("MegamiId");
+
+                    b.ToTable("MegamiImages");
                 });
 
             modelBuilder.Entity("MegamiManager.Models.MegamiModels.MegamiTag", b =>
@@ -410,6 +448,19 @@ namespace MegamiManager.Data.Migrations
                     b.HasOne("MegamiManager.Models.ApplicationUser", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId");
+                });
+
+            modelBuilder.Entity("MegamiManager.Models.MegamiModels.MegamiImage", b =>
+                {
+                    b.HasOne("MegamiManager.Models.MegamiModels.Image", "Image")
+                        .WithMany("Megamis")
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MegamiManager.Models.MegamiModels.Megami", "Megami")
+                        .WithMany("Images")
+                        .HasForeignKey("MegamiId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MegamiManager.Models.MegamiModels.MegamiTag", b =>

@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace MegamiManager.Models.MegamiModels
 {
+    public enum ImageType
+    {
+        None = 0,
+        Main = 1,
+        Cutin = 2,
+        Icon = 4
+    }
+
     /// <remarks>
     /// 面倒くさいので便宜上サムネイルも同一レコードで扱う。
     /// 正規化はしない。
@@ -26,6 +34,12 @@ namespace MegamiManager.Models.MegamiModels
         public string Key { get; set; }
         [MaxLength(256)]
         public string Name { get; set; }
+        [MaxLength(1000)]
+        public string Description { get; set; }
+        [MaxLength(1000)]
+        public string Comment { get; set; }
+        [MaxLength(32)]
+        public string ImageType { get; set; }
 
         [Required]
         [MaxLength(512)]
@@ -38,5 +52,7 @@ namespace MegamiManager.Models.MegamiModels
         public string PrivateUri { get; set; }
         [MaxLength(512)]
         public string PrivateThumbnailUri { get; set; }
+
+        public IList<MegamiImage> Megamis { get; set; }
     }
 }

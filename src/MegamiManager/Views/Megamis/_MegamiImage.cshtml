@@ -1,0 +1,23 @@
+﻿@model MegamiManager.Models.MegamiModels.Megami
+
+<div>
+    <div class="megami-image-slider">
+        @foreach (var item in Model.Images)
+        {
+            <div>
+                <div><a href="@item.Image.Uri" target="_blank"><img src="@item.Image.Uri" title="@item.Image.Name" /></a></div>
+                <div>
+                    <strong>@item.Image.Name</strong>
+                    <div class="markdown">@item.Image.Description</div>
+                    <div class="markdown">@item.Image.Comment</div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="megami-image-nav">
+        @foreach (var item in Model.Images)
+        {
+            <div><img src="@item.Image.ThumbnailUri" title="@item.Image.Name" /></div>
+        }
+    </div>
+</div>

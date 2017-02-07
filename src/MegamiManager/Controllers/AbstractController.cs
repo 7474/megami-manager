@@ -1,4 +1,5 @@
 ﻿using MegamiManager.Models;
+using MegamiManager.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,6 +26,16 @@ namespace MegamiManager.Controllers
         protected Task<ApplicationUser> GetCurrentUserAsync()
         {
             return _userManager.GetUserAsync(HttpContext.User);
+        }
+
+        protected SakuraObjectStorageImageRepository GetRepository()
+        {
+            // XXX DI
+            return new SakuraObjectStorageImageRepository(
+                    "megami-device",
+                    "megami-device",
+                    "xxx"
+                );
         }
     }
 }

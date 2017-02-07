@@ -5,6 +5,9 @@
 }
 
 <h2>Edit</h2>
+<p>
+    <a asp-action="AddImage" asp-route-id="@Model.MegamiId">Add Image</a>
+</p>
 
 <form asp-action="Edit" id="chart-input-form">
     <div class="form-horizontal">
@@ -36,14 +39,14 @@
         <div class="form-group">
             <label asp-for="Description" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <textarea asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <label asp-for="Comment" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <textarea asp-for="Comment" class="form-control" />
+                <textarea asp-for="Comment" class="form-control"></textarea>
                 <span asp-validation-for="Comment" class="text-danger" />
             </div>
         </div>

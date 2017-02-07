@@ -9,26 +9,23 @@ using MegamiManager.Data;
 using MegamiManager.Models.MegamiModels;
 using Microsoft.AspNetCore.Http;
 using MegamiManager.Repositories;
+using MegamiManager.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace MegamiManager.Controllers
 {
-    public class ImagesController : Controller
+    public class ImagesController : AbstractController
     {
         private readonly ApplicationDbContext _context;
 
-        public ImagesController(ApplicationDbContext context)
+        public ImagesController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            ILoggerFactory loggerFactory)
+            : base(userManager, loggerFactory)
         {
             _context = context;
-        }
-
-        private static SakuraObjectStorageImageRepository GetRepository()
-        {
-            // XXX DI
-            return new SakuraObjectStorageImageRepository(
-                    "megami-device",
-                    "megami-device",
-                    "xxx"
-                );
         }
 
         // GET: Images
