@@ -18,14 +18,17 @@ namespace MegamiManager.Controllers
     public class ImagesController : AbstractController
     {
         private readonly ApplicationDbContext _context;
+        private readonly IImageRepository _imageRepository;
 
         public ImagesController(
             ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
+            IImageRepository imageRepository,
             ILoggerFactory loggerFactory)
             : base(userManager, loggerFactory)
         {
             _context = context;
+            _imageRepository = imageRepository;
         }
 
         // GET: Images
@@ -65,8 +68,7 @@ namespace MegamiManager.Controllers
         //        public async Task<IActionResult> Create([Bind("ImageId,CreatedAt,Name,OwnerId,PrivateThumbnailUri,PrivateUri,PublicThumbnailUri,PublicUri,Timestamp,UpdatedAt")] Image image)
         public async Task<IActionResult> Create(IFormFile file)
         {
-            var imageRepository = GetRepository();
-            var image = await imageRepository.Create(file);
+            var image = await _imageRepository.Create(file);
             _context.Add(image);
             await _context.SaveChangesAsync();
             return RedirectToAction("Details", new { id = image.ImageId });
@@ -106,8 +108,7 @@ namespace MegamiManager.Controllers
                 {
                     var imageExist = await _context.Images.SingleOrDefaultAsync(x => x.ImageId == id);
                     imageExist.Name = image.Name;
-                    var imageRepository = GetRepository();
-                    await imageRepository.Update(imageExist, file);
+                    await _imageRepository.Update(imageExist, file);
                     _context.Update(imageExist);
                     await _context.SaveChangesAsync();
                 }
@@ -150,8 +151,7 @@ namespace MegamiManager.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var image = await _context.Images.SingleOrDefaultAsync(m => m.ImageId == id);
-            var imageRepository = GetRepository();
-            await imageRepository.Delete(image);
+            await _imageRepository.Delete(image);
             _context.Images.Remove(image);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

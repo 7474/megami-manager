@@ -27,15 +27,5 @@ namespace MegamiManager.Controllers
         {
             return _userManager.GetUserAsync(HttpContext.User);
         }
-
-        protected SakuraObjectStorageImageRepository GetRepository()
-        {
-            // XXX DI
-            return new SakuraObjectStorageImageRepository(
-                    "megami-device",
-                    "megami-device",
-                    "xxx"
-                );
-        }
     }
 }

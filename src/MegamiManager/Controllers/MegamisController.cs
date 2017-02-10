@@ -12,20 +12,24 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using MegamiManager.Models;
 using Microsoft.AspNetCore.Http;
+using MegamiManager.Repositories;
 
 namespace MegamiManager.Controllers
 {
     public class MegamisController : AbstractController
     {
         private readonly ApplicationDbContext _context;
+        private readonly IImageRepository _imageRepository;
 
         public MegamisController(
             ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
+            IImageRepository imageRepository,
             ILoggerFactory loggerFactory)
             : base(userManager, loggerFactory)
         {
             _context = context;
+            _imageRepository = imageRepository;
         }
 
         // GET: Megamis
@@ -64,8 +68,7 @@ namespace MegamiManager.Controllers
             }
             megami.AssertOwn(await GetCurrentUserAsync());
 
-            var imageRepository = GetRepository();
-            var imageInsert = await imageRepository.Create(file);
+            var imageInsert = await _imageRepository.Create(file);
 
             imageInsert.Name = string.IsNullOrEmpty(image.Name) ? imageInsert.Name : image.Name;
             imageInsert.Description = image.Description;

@@ -13,6 +13,7 @@ using MegamiManager.Data;
 using MegamiManager.Models;
 using MegamiManager.Services;
 using MySQL.Data.EntityFrameworkCore.Extensions;
+using MegamiManager.Repositories;
 
 namespace MegamiManager
 {
@@ -58,6 +59,16 @@ namespace MegamiManager
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            //
+            services.AddSingleton<IImageRepository, SakuraObjectStorageImageRepository>(provider =>
+            {
+                return new SakuraObjectStorageImageRepository(
+                        Configuration["BucketName"],
+                        Configuration["StorageKey"],
+                        Configuration["StorageSecret"]
+                    );
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
