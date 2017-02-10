@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MegamiManager.Models;
 using MegamiManager.Models.MegamiModels;
+using MySQL.Data.EntityFrameworkCore.Extensions;
 
 namespace MegamiManager.Data
 {
@@ -69,17 +70,18 @@ namespace MegamiManager.Data
             };
             foreach (var entity in entities)
             {
-                // XXX もしかしなくてもこれはSQL Server限定なのでは、、、？
-                builder.Entity(entity)
-                    .Property(typeof(DateTimeOffset), "CreatedAt")
-                    .HasDefaultValueSql("SYSDATETIMEOFFSET()");
-                builder.Entity(entity)
-                    .Property(typeof(DateTimeOffset), "UpdatedAt")
-                    .HasDefaultValueSql("SYSDATETIMEOFFSET()");
-                // XXX 全レコードに跳ねるワロタ
-                builder.Entity(entity)
-                    .Property(typeof(DateTimeOffset), "UpdatedAt")
-                    .HasComputedColumnSql("SYSDATETIMEOFFSET()");
+                //// XXX もしかしなくてもこれはSQL Server限定なのでは、、、？
+                //// → いい感じにMySQL向けに設定できない
+                //builder.Entity(entity)
+                //    .Property(typeof(DateTimeOffset), "CreatedAt")
+                //    .HasDefaultValueSql("CURRENT_TIMESTAMP()");
+                //builder.Entity(entity)
+                //    .Property(typeof(DateTimeOffset), "UpdatedAt")
+                //    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                //// XXX 全レコードに跳ねるワロタ
+                //builder.Entity(entity)
+                //    .Property(typeof(DateTimeOffset), "UpdatedAt")
+                //    .HasComputedColumnSql("CURRENT_TIMESTAMP");
             }
         }
 

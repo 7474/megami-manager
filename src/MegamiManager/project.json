@@ -45,7 +45,8 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "AWSSDK.S3": "3.3.5.3"
+    "AWSSDK.S3": "3.3.5.3",
+    "MySql.Data.EntityFrameworkCore": "7.0.6-IR31"
   },
 
   "tools": {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace MegamiManager.Data.Migrations
 {
@@ -14,9 +13,9 @@ namespace MegamiManager.Data.Migrations
                 columns: table => new
                 {
                     ImageId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:AutoIncrement", true),
                     Comment = table.Column<string>(maxLength: 1000, nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
+                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
                     ImageType = table.Column<string>(maxLength: 32, nullable: true),
                     Key = table.Column<string>(maxLength: 256, nullable: false),
@@ -27,7 +26,7 @@ namespace MegamiManager.Data.Migrations
                     PublicThumbnailUri = table.Column<string>(maxLength: 512, nullable: true),
                     PublicUri = table.Column<string>(maxLength: 512, nullable: false),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false, computedColumnSql: "SYSDATETIMEOFFSET()")
+                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,13 +44,13 @@ namespace MegamiManager.Data.Migrations
                 columns: table => new
                 {
                     MegamiId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:AutoIncrement", true),
                     ActiveTime = table.Column<int>(nullable: false),
                     AerialMobility = table.Column<int>(nullable: false),
                     ArmorDefense = table.Column<int>(nullable: false),
                     CloseRangeBattle = table.Column<int>(nullable: false),
                     Comment = table.Column<string>(maxLength: 1000, nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
+                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
                     Design = table.Column<string>(maxLength: 64, nullable: false),
                     GroundMobility = table.Column<int>(nullable: false),
@@ -63,7 +62,7 @@ namespace MegamiManager.Data.Migrations
                     Stealth = table.Column<int>(nullable: false),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
                     Type = table.Column<string>(maxLength: 64, nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false, computedColumnSql: "SYSDATETIMEOFFSET()"),
+                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false),
                     Weight = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -82,7 +81,7 @@ namespace MegamiManager.Data.Migrations
                 columns: table => new
                 {
                     TagId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:AutoIncrement", true),
                     CreatedAt = table.Column<DateTimeOffset>(nullable: false),
                     Name = table.Column<string>(maxLength: 32, nullable: false),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
@@ -98,14 +97,14 @@ namespace MegamiManager.Data.Migrations
                 columns: table => new
                 {
                     TeamId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:AutoIncrement", true),
                     Comment = table.Column<string>(maxLength: 1000, nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
+                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
                     OwnerId = table.Column<string>(nullable: true),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false, computedColumnSql: "SYSDATETIMEOFFSET()")
+                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,10 +123,10 @@ namespace MegamiManager.Data.Migrations
                 {
                     MegamiId = table.Column<int>(nullable: false),
                     ImageId = table.Column<int>(nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
+                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
                     DisplayOrder = table.Column<int>(nullable: false),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false, computedColumnSql: "SYSDATETIMEOFFSET()")
+                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -151,7 +150,7 @@ namespace MegamiManager.Data.Migrations
                 columns: table => new
                 {
                     WeaponId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:AutoIncrement", true),
                     CreatedAt = table.Column<DateTimeOffset>(nullable: false),
                     MegamiId = table.Column<int>(nullable: true),
                     Name = table.Column<string>(maxLength: 64, nullable: false),

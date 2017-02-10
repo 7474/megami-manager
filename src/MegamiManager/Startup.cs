@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using MegamiManager.Data;
 using MegamiManager.Models;
 using MegamiManager.Services;
+using MySQL.Data.EntityFrameworkCore.Extensions;
 
 namespace MegamiManager
 {
@@ -46,7 +47,7 @@ namespace MegamiManager
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

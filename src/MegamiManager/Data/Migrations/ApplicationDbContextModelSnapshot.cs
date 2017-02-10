@@ -13,8 +13,7 @@ namespace MegamiManager.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.1")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "1.0.1");
 
             modelBuilder.Entity("MegamiManager.Models.ApplicationUser", b =>
                 {
@@ -73,9 +72,7 @@ namespace MegamiManager.Data.Migrations
                     b.Property<string>("Comment")
                         .HasAnnotation("MaxLength", 1000);
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+                    b.Property<DateTimeOffset>("CreatedAt");
 
                     b.Property<string>("Description")
                         .HasAnnotation("MaxLength", 1000);
@@ -110,9 +107,7 @@ namespace MegamiManager.Data.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasComputedColumnSql("SYSDATETIMEOFFSET()");
+                    b.Property<DateTimeOffset>("UpdatedAt");
 
                     b.HasKey("ImageId");
 
@@ -137,9 +132,7 @@ namespace MegamiManager.Data.Migrations
                     b.Property<string>("Comment")
                         .HasAnnotation("MaxLength", 1000);
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+                    b.Property<DateTimeOffset>("CreatedAt");
 
                     b.Property<string>("Description")
                         .HasAnnotation("MaxLength", 1000);
@@ -172,9 +165,7 @@ namespace MegamiManager.Data.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 64);
 
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasComputedColumnSql("SYSDATETIMEOFFSET()");
+                    b.Property<DateTimeOffset>("UpdatedAt");
 
                     b.Property<int>("Weight");
 
@@ -191,9 +182,7 @@ namespace MegamiManager.Data.Migrations
 
                     b.Property<int>("ImageId");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+                    b.Property<DateTimeOffset>("CreatedAt");
 
                     b.Property<int>("DisplayOrder");
 
@@ -201,9 +190,7 @@ namespace MegamiManager.Data.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasComputedColumnSql("SYSDATETIMEOFFSET()");
+                    b.Property<DateTimeOffset>("UpdatedAt");
 
                     b.HasKey("MegamiId", "ImageId");
 
@@ -274,9 +261,7 @@ namespace MegamiManager.Data.Migrations
                     b.Property<string>("Comment")
                         .HasAnnotation("MaxLength", 1000);
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+                    b.Property<DateTimeOffset>("CreatedAt");
 
                     b.Property<string>("Description")
                         .HasAnnotation("MaxLength", 1000);
@@ -291,9 +276,7 @@ namespace MegamiManager.Data.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasComputedColumnSql("SYSDATETIMEOFFSET()");
+                    b.Property<DateTimeOffset>("UpdatedAt");
 
                     b.HasKey("TeamId");
 
