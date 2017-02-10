@@ -15,7 +15,7 @@ namespace MegamiManager.Data.Migrations
                     ImageId = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
                     Comment = table.Column<string>(maxLength: 1000, nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
                     ImageType = table.Column<string>(maxLength: 32, nullable: true),
                     Key = table.Column<string>(maxLength: 256, nullable: false),
@@ -26,7 +26,7 @@ namespace MegamiManager.Data.Migrations
                     PublicThumbnailUri = table.Column<string>(maxLength: 512, nullable: true),
                     PublicUri = table.Column<string>(maxLength: 512, nullable: false),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false)
+                    UpdatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,7 +50,7 @@ namespace MegamiManager.Data.Migrations
                     ArmorDefense = table.Column<int>(nullable: false),
                     CloseRangeBattle = table.Column<int>(nullable: false),
                     Comment = table.Column<string>(maxLength: 1000, nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
                     Design = table.Column<string>(maxLength: 64, nullable: false),
                     GroundMobility = table.Column<int>(nullable: false),
@@ -62,7 +62,7 @@ namespace MegamiManager.Data.Migrations
                     Stealth = table.Column<int>(nullable: false),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
                     Type = table.Column<string>(maxLength: 64, nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
                     Weight = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -82,10 +82,10 @@ namespace MegamiManager.Data.Migrations
                 {
                     TagId = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(maxLength: 32, nullable: false),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false)
+                    UpdatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,12 +99,12 @@ namespace MegamiManager.Data.Migrations
                     TeamId = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
                     Comment = table.Column<string>(maxLength: 1000, nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
                     OwnerId = table.Column<string>(nullable: true),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false)
+                    UpdatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -123,10 +123,10 @@ namespace MegamiManager.Data.Migrations
                 {
                     MegamiId = table.Column<int>(nullable: false),
                     ImageId = table.Column<int>(nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     DisplayOrder = table.Column<int>(nullable: false),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false)
+                    UpdatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -151,11 +151,11 @@ namespace MegamiManager.Data.Migrations
                 {
                     WeaponId = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
                     MegamiId = table.Column<int>(nullable: true),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false)
+                    UpdatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

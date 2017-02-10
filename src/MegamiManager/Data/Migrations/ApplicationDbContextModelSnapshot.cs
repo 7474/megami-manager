@@ -72,7 +72,7 @@ namespace MegamiManager.Data.Migrations
                     b.Property<string>("Comment")
                         .HasAnnotation("MaxLength", 1000);
 
-                    b.Property<DateTimeOffset>("CreatedAt");
+                    b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("Description")
                         .HasAnnotation("MaxLength", 1000);
@@ -107,7 +107,7 @@ namespace MegamiManager.Data.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<DateTimeOffset>("UpdatedAt");
+                    b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("ImageId");
 
@@ -132,7 +132,7 @@ namespace MegamiManager.Data.Migrations
                     b.Property<string>("Comment")
                         .HasAnnotation("MaxLength", 1000);
 
-                    b.Property<DateTimeOffset>("CreatedAt");
+                    b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("Description")
                         .HasAnnotation("MaxLength", 1000);
@@ -165,7 +165,7 @@ namespace MegamiManager.Data.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 64);
 
-                    b.Property<DateTimeOffset>("UpdatedAt");
+                    b.Property<DateTime>("UpdatedAt");
 
                     b.Property<int>("Weight");
 
@@ -182,7 +182,7 @@ namespace MegamiManager.Data.Migrations
 
                     b.Property<int>("ImageId");
 
-                    b.Property<DateTimeOffset>("CreatedAt");
+                    b.Property<DateTime>("CreatedAt");
 
                     b.Property<int>("DisplayOrder");
 
@@ -190,7 +190,7 @@ namespace MegamiManager.Data.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<DateTimeOffset>("UpdatedAt");
+                    b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("MegamiId", "ImageId");
 
@@ -236,7 +236,7 @@ namespace MegamiManager.Data.Migrations
                     b.Property<int>("TagId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTimeOffset>("CreatedAt");
+                    b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -246,7 +246,7 @@ namespace MegamiManager.Data.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<DateTimeOffset>("UpdatedAt");
+                    b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("TagId");
 
@@ -261,7 +261,7 @@ namespace MegamiManager.Data.Migrations
                     b.Property<string>("Comment")
                         .HasAnnotation("MaxLength", 1000);
 
-                    b.Property<DateTimeOffset>("CreatedAt");
+                    b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("Description")
                         .HasAnnotation("MaxLength", 1000);
@@ -276,7 +276,7 @@ namespace MegamiManager.Data.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<DateTimeOffset>("UpdatedAt");
+                    b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("TeamId");
 
@@ -290,7 +290,7 @@ namespace MegamiManager.Data.Migrations
                     b.Property<int>("WeaponId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTimeOffset>("CreatedAt");
+                    b.Property<DateTime>("CreatedAt");
 
                     b.Property<int?>("MegamiId");
 
@@ -302,7 +302,7 @@ namespace MegamiManager.Data.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<DateTimeOffset>("UpdatedAt");
+                    b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("WeaponId");
 

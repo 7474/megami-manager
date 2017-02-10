@@ -9,10 +9,10 @@ namespace MegamiManager.Models.MegamiModels
 {
     public abstract class AbstractEntity
     {
-        public DateTimeOffset CreatedAt { get; set; }
-        public DateTimeOffset UpdatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         [Timestamp]
-        public byte[] Timestamp { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 
     public abstract class OwnableEntity : AbstractEntity
