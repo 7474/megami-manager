@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2A965DD9-E59E-4A0E-BCBA-9795A3D25600}"
 	ProjectSection(SolutionItems) = preProject
 		global.json = global.json
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MegamiManager", "src\MegamiManager\MegamiManager.xproj", "{C0EEBBE9-ABC5-42A7-A98F-831F4813C3B5}"
