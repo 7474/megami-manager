@@ -1,64 +1,48 @@
 @model MegamiManager.Models.MegamiModels.Team
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Name;
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Team</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Comment)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Comment)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.OwnerId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.OwnerId)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
-    </dl>
-    <h4>Team Members</h4>
-    <hr />
-    <ul>
-        @foreach (var item in Model.Members)
-        {
-            <li>
-                <a asp-controller="Megamis" asp-action="Details" asp-route-id="@item.MegamiId">@item.Megami.Name</a>
-            </li>
-        }
-    </ul>
+<div class="team-detail-wrapper">
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Owner)
+                </dt>
+                <dd>
+                    @Html.Partial("../Shared/_Owner.cshtml", Model.Owner)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.UpdatedAt)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UpdatedAt)
+                </dd>
+            </dl>
+            <h4>Description</h4>
+            <div class="markdown">@Model.Description</div>
+            <h4>Comment</h4>
+            <div class="markdown">@Model.Comment</div>
+        </div>
+        <div class="col-md-6">
+            <h4>Team Members</h4>
+            @foreach (var item in Model.Members)
+            {
+                @Html.Partial("../Megamis/_MegamiSummary.cshtml", @item.Megami);
+            }
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.TeamId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="btn-group" role="group">
+    <a asp-action="MyIndex" class="btn btn-default">My Team</a>
+    <a asp-action="Index" class="btn btn-default">Back to List</a>
 </div>

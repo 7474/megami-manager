@@ -4,12 +4,10 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
+<h2>Create Team</h2>
 
 <form asp-action="Create">
     <div class="form-horizontal">
-        <h4>Team</h4>
-        <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="Name" class="col-md-2 control-label"></label>
@@ -40,8 +38,9 @@
     </div>
 </form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="btn-group" role="group">
+    <a asp-action="MyIndex" class="btn btn-default">My Megami</a>
+    <a asp-action="Index" class="btn btn-default">Back to List</a>
 </div>
 
 @section Scripts {

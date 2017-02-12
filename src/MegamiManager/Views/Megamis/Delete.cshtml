@@ -1,15 +1,12 @@
 @model MegamiManager.Models.MegamiModels.Megami
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Megami";
 }
 
-<h2>Delete</h2>
+<h2>Delete Megami</h2>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Megami</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Name)
@@ -18,11 +15,15 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            <a asp-action="Index">Back to List</a>
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
         </div>
     </form>
+</div>
+
+<div class="btn-group" role="group">
+    <a asp-action="MyIndex" class="btn btn-default">My Megami</a>
+    <a asp-action="Index" class="btn btn-default">Back to List</a>
 </div>
