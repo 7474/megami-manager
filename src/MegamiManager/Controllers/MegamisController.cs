@@ -37,6 +37,8 @@ namespace MegamiManager.Controllers
         {
             return View(await _context.Megami
                 .Include(x => x.Owner)
+                .Include(x => x.Images).ThenInclude(x => x.Image)
+                .Select(x => x.NormalizeImageOrder())
                 .ToListAsync());
         }
 
@@ -46,7 +48,9 @@ namespace MegamiManager.Controllers
             var user = await GetCurrentUserAsync();
             return View(await _context.Megami
                 .Include(x => x.Owner)
+                .Include(x => x.Images).ThenInclude(x => x.Image)
                 .Where(x => x.OwnerId == user.Id)
+                .Select(x => x.NormalizeImageOrder())
                 .ToListAsync());
         }
 
@@ -106,6 +110,7 @@ namespace MegamiManager.Controllers
             {
                 return NotFound();
             }
+            megami.NormalizeImageOrder();
 
             return View(megami);
         }
@@ -175,10 +180,25 @@ namespace MegamiManager.Controllers
                 try
                 {
                     // XXX 詰め替えもしくはもっと要領よく検証
+                    // なんかいい感じに所有者検証するモデルありそうなんだけどねぇ
                     // TryUpdateModel と併用？
                     //                 if (TryUpdateModel(studentToUpdate, "",
-                    //new string[] { "LastName", "FirstMidName", "EnrollmentDate" }))
-                    //                 {
+                    //new string[] { "LastName", "FirstMidName", "EnrollmentDate" }))  {
+                    megamiExist.Type = megami.Type;
+                    megamiExist.Name = megami.Name;
+                    megamiExist.Design = megami.Design;
+                    megamiExist.Description = megami.Description;
+                    megamiExist.Comment = megami.Comment;
+                    megamiExist.CloseRangeBattle = megami.CloseRangeBattle;
+                    megamiExist.MidRangeBattle = megami.MidRangeBattle;
+                    megamiExist.LongRangeBattle = megami.LongRangeBattle;
+                    megamiExist.ArmorDefense = megami.ArmorDefense;
+                    megamiExist.Weight = megami.Weight;
+                    megamiExist.ActiveTime = megami.ActiveTime;
+                    megamiExist.Stealth = megami.Stealth;
+                    megamiExist.Recon = megami.Recon;
+                    megamiExist.AerialMobility = megami.AerialMobility;
+                    megamiExist.GroundMobility = megami.GroundMobility;
                     _context.Update(megamiExist);
                     await _context.SaveChangesAsync();
                 }

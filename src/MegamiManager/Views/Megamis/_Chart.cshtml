@@ -4,8 +4,10 @@
         src: url(./images/DSEG7Classic-Regular.woff);
     }
 
+    .chart-wrapper {
+    }
+
     .chart-container {
-        float: left;
         position: relative;
         background-color: #ccc;
         width: 448px;
@@ -44,7 +46,7 @@
         height: 20px;
     }
 </style>
-<div>
+<div class="chart-wrapper">
     <div class="chart-container">
         <div class="chart-background">
             <img id="chart-background-001" crossorigin="anonymous" src="./images/battle-point-background.png" />
@@ -56,8 +58,7 @@
         </div>
         <div id="chart-total-001" class="chart-total"></div>
     </div>
-    <div style="clear: both;"></div>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <script>
         //
         var xxxOptions = {

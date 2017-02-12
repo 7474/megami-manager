@@ -48,11 +48,11 @@
     @foreach (var item in Model.Members)
     {
         <li>
-            @item.Megami.Name
-            <form asp-action="RemoveMember">
+            <strong>@item.Megami.Name</strong>
+            <form asp-action="RemoveMember" class="form-inline" style="display: inline-block;">
                 <input type="hidden" name="id" value="@item.TeamId" />
                 <input type="hidden" name="megamiId" value="@item.MegamiId" />
-                <input type="submit" value="Remove" class="btn btn-danger" />
+                <input type="submit" value="Remove" class="btn btn-warning" />
             </form>
         </li>
     }
@@ -77,8 +77,9 @@
     </div>
 </form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="btn-group" role="group">
+    <a asp-action="MyIndex" class="btn btn-default">My Megami</a>
+    <a asp-action="Index" class="btn btn-default">Back to List</a>
 </div>
 
 @section Scripts {

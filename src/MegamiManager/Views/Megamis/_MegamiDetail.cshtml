@@ -1,0 +1,101 @@
+@model MegamiManager.Models.MegamiModels.Megami
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">@Html.DisplayFor(model => model.Name)</h3>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal list-group">
+            <dt>
+                @Html.DisplayNameFor(model => model.Design)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Design)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Type)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Type)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Owner)
+            </dt>
+            <dd>
+                @Html.Partial("../Shared/_Owner.cshtml", Model.Owner)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.UpdatedAt)
+            </dd>
+        </dl>
+        <h4>Description</h4>
+        <div class="markdown">@Model.Description</div>
+        <dl class="dl-horizontal list-group">
+            <dt>
+                @Html.DisplayNameFor(model => model.CloseRangeBattle)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CloseRangeBattle)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.MidRangeBattle)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.MidRangeBattle)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.LongRangeBattle)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.LongRangeBattle)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ArmorDefense)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ArmorDefense)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Weight)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Weight)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ActiveTime)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ActiveTime)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Stealth)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Stealth)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Recon)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Recon)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.AerialMobility)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AerialMobility)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GroundMobility)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GroundMobility)
+            </dd>
+        </dl>
+        <h4>Comment</h4>
+        <div class="markdown">@Model.Comment</div>
+    </div>
+</div>

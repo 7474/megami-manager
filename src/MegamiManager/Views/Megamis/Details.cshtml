@@ -1,129 +1,38 @@
 @model MegamiManager.Models.MegamiModels.Megami
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Name;
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Megami</h4>
-    <hr />
-    <form id="chart-input-form">
-        <div class="form-horizontal">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="MegamiId" />
-            <div class="form-group">
-                <label asp-for="Type" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Type" class="form-control" />
-                    <span asp-validation-for="Type" class="text-danger" />
-                </div>
+<div class="megami-detail-wrapper">
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                @Html.Partial("_MegamiImage.cshtml")
+                <form id="chart-input-form">
+                    <input asp-for="CloseRangeBattle" type="hidden" class="chart-input-params" />
+                    <input asp-for="MidRangeBattle" type="hidden" class="chart-input-params" />
+                    <input asp-for="LongRangeBattle" type="hidden" class="chart-input-params" />
+                    <input asp-for="ArmorDefense" type="hidden" class="chart-input-params" />
+                    <input asp-for="Weight" type="hidden" class="chart-input-params" />
+                    <input asp-for="ActiveTime" type="hidden" class="chart-input-params" />
+                    <input asp-for="Stealth" type="hidden" class="chart-input-params" />
+                    <input asp-for="Recon" type="hidden" class="chart-input-params" />
+                    <input asp-for="AerialMobility" type="hidden" class="chart-input-params" />
+                    <input asp-for="GroundMobility" type="hidden" class="chart-input-params" />
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Design" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Design" class="form-control" />
-                    <span asp-validation-for="Design" class="text-danger" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Comment" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Comment" class="form-control" />
-                    <span asp-validation-for="Comment" class="text-danger" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="CloseRangeBattle" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="CloseRangeBattle" type="number" class="chart-input-params form-control" />
-                    <span asp-validation-for="CloseRangeBattle" class="text-danger" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="MidRangeBattle" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="MidRangeBattle" type="number" class="chart-input-params form-control" />
-                    <span asp-validation-for="MidRangeBattle" class="text-danger" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="LongRangeBattle" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="LongRangeBattle" type="number" class="chart-input-params form-control" />
-                    <span asp-validation-for="LongRangeBattle" class="text-danger" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="ArmorDefense" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="ArmorDefense" type="number" class="chart-input-params form-control" />
-                    <span asp-validation-for="ArmorDefense" class="text-danger" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Weight" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Weight" type="number" class="chart-input-params form-control" />
-                    <span asp-validation-for="Weight" class="text-danger" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="ActiveTime" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="ActiveTime" type="number" class="chart-input-params form-control" />
-                    <span asp-validation-for="ActiveTime" class="text-danger" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Stealth" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Stealth" type="number" class="chart-input-params form-control" />
-                    <span asp-validation-for="Stealth" class="text-danger" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Recon" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Recon" type="number" class="chart-input-params form-control" />
-                    <span asp-validation-for="Recon" class="text-danger" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="AerialMobility" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="AerialMobility" type="number" class="chart-input-params form-control" />
-                    <span asp-validation-for="AerialMobility" class="text-danger" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="GroundMobility" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="GroundMobility" type="number" class="chart-input-params form-control" />
-                    <span asp-validation-for="GroundMobility" class="text-danger" />
-                </div>
+            <div style="margin-top: 1em; margin-bottom: 1em;">
+                @Html.Partial("_Chart.cshtml")
             </div>
         </div>
-    </form>
+        <div class="col-md-6">
+            @Html.Partial("_MegamiDetail.cshtml")
+        </div>
+    </div>
 </div>
-@Html.Partial("_Chart.cshtml")
-@Html.Partial("_MegamiImage.cshtml")
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.MegamiId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="btn-group" role="group">
+    <a asp-action="MyIndex" class="btn btn-default">My Megami</a>
+    <a asp-action="Index" class="btn btn-default">Back to List</a>
 </div>

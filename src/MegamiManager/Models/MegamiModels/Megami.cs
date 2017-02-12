@@ -72,5 +72,32 @@ namespace MegamiManager.Models.MegamiModels
                 };
             }
         }
+
+        public bool HasThumbnail
+        {
+            get
+            {
+                return Images != null && Images.Any();
+            }
+        }
+
+        public string ThumbnailUri
+        {
+            get
+            {
+                return HasThumbnail
+                    ? Images.First().Image.ThumbnailUri
+                    : string.Empty;
+            }
+        }
+
+        public Megami NormalizeImageOrder()
+        {
+            if (Images != null)
+            {
+                Images = Images.OrderBy(x => x.DisplayOrder).ToList();
+            }
+            return this;
+        }
     }
 }

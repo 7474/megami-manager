@@ -1,0 +1,40 @@
+@using Microsoft.AspNetCore.Identity
+@using MegamiManager.Models
+@model MegamiManager.Models.MegamiModels.Team
+
+@*XXX Ç±ÇÍÇÕèàóùå¯ó¶ìIÇ…ÇÕÇ«Ç§Ç»ÇÒÇæÇÎÇ§Ç©ÅH*@
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<div class="media">
+    @*<div class="media-left">
+        <a asp-controller="Megamis" asp-action="Details" asp-route-id="@Model.MegamiId">
+            @if (Model.HasThumbnail)
+            {
+                <img class="media-object megami-thumbnail" src="@Model.ThumbnailUri" alt="@Model.Name">
+            }
+            else
+            {
+                <img class="media-object megami-thumbnail" src="~/images/empty-thumbnail.png" alt="Empty">
+            }
+        </a>
+    </div>*@
+    <div class="media-body">
+        <h4 class="media-heading">
+            <a asp-controller="Teams" asp-action="Details" asp-route-id="@Model.TeamId">
+                @Model.Name
+            </a>
+        </h4>
+        <p>@Model.Description</p>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            @if (UserManager.GetUserId(User) == Model.OwnerId)
+            {
+                <div class="btn-group" role="group">
+                    <a asp-controller="Teams" asp-action="Edit" asp-route-id="@Model.TeamId" class="btn btn-default">Edit</a>
+                    <a asp-controller="Teams" asp-action="Delete" asp-route-id="@Model.TeamId" class="btn btn-default">Delete</a>
+                </div>
+            }
+        }
+    </div>
+</div>

@@ -95,7 +95,7 @@ namespace MegamiManager.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ImageId,Name,Timestamp")] Image image, IFormFile file)
+        public async Task<IActionResult> Edit(int id, Image image, IFormFile file)
         {
             if (id != image.ImageId)
             {
@@ -108,7 +108,12 @@ namespace MegamiManager.Controllers
                 {
                     var imageExist = await _context.Images.SingleOrDefaultAsync(x => x.ImageId == id);
                     imageExist.Name = image.Name;
-                    await _imageRepository.Update(imageExist, file);
+                    imageExist.Description = image.Description;
+                    imageExist.Comment = image.Comment;
+                    if (file != null)
+                    {
+                        await _imageRepository.Update(imageExist, file);
+                    }
                     _context.Update(imageExist);
                     await _context.SaveChangesAsync();
                 }
