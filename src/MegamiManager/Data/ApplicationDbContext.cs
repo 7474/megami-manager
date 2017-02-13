@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using MegamiManager.Models;
 using MegamiManager.Models.MegamiModels;
 using MySQL.Data.EntityFrameworkCore.Extensions;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace MegamiManager.Data
 {
@@ -15,6 +17,20 @@ namespace MegamiManager.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+        }
+
+        public override void Dispose()
+        {
+            try
+            {
+               // Database.RollbackTransaction();
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceWarning(ex.Message);
+            }
+            base.Dispose();
+            Debug.WriteLine("Dispose DbContext.");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -9,6 +9,7 @@ namespace MegamiManager.Models.MegamiModels
 {
     public abstract class AbstractEntity
     {
+        // XXX Allow Zero Datetime=true;Convert Zero Datetime=True;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         [Timestamp]

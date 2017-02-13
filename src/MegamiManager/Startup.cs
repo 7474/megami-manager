@@ -12,7 +12,8 @@ using Microsoft.Extensions.Logging;
 using MegamiManager.Data;
 using MegamiManager.Models;
 using MegamiManager.Services;
-using MySQL.Data.EntityFrameworkCore.Extensions;
+//using MySQL.Data.EntityFrameworkCore.Extensions;
+using Microsoft.EntityFrameworkCore;
 using MegamiManager.Repositories;
 
 namespace MegamiManager
@@ -48,7 +49,8 @@ namespace MegamiManager
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection")),
+                ServiceLifetime.Transient);
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -75,7 +77,8 @@ namespace MegamiManager
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            // XXX 環境によってレベルを分ける
+            loggerFactory.AddDebug(LogLevel.Debug);
 
             app.UseApplicationInsightsRequestTelemetry();
 
