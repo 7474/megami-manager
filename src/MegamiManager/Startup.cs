@@ -50,14 +50,20 @@ namespace MegamiManager
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+                {
+                    options.SignIn.RequireConfirmedEmail = true;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
 
             // Add application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<IEmailSender, SendGridMessageSender>(provider =>
+            {
+                return new SendGridMessageSender(Configuration["SendGridKey"], Configuration["SendGridFrom"]);
+            });
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
             //
