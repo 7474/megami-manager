@@ -46,7 +46,8 @@
       "type": "build"
     },
     "AWSSDK.S3": "3.3.5.3",
-    "MySql.Data.EntityFrameworkCore": "7.0.6-IR31"
+    "MySql.Data.EntityFrameworkCore": "7.0.6-IR31",
+    "Microsoft.AspNetCore.Authentication.Twitter": "1.0.1"
   },
 
   "tools": {

@@ -130,7 +130,7 @@ namespace MegamiManager.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(image);
+            //return View(image);
         }
 
         // GET: Images/Delete/5

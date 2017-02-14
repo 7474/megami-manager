@@ -47,6 +47,7 @@ namespace MegamiManager.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.ChangeProfileSuccess ? "Your profile hs been changed."
                 : "";
 
             var user = await GetCurrentUserAsync();
@@ -328,6 +329,48 @@ namespace MegamiManager.Controllers
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
 
+        //
+        // GET: /Manage/ChangeProfile
+        [HttpGet]
+        public async Task<IActionResult> ChangeProfile()
+        {
+            var user = await GetCurrentUserAsync();
+            var model = new ChangeProfileViewModel()
+            {
+                NickName = user.NickName,
+                Comment = user.Comment
+            };
+            return View(model);
+        }
+
+        //
+        // POST: /Manage/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeProfile(ChangeProfileViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await GetCurrentUserAsync();
+            if (user != null)
+            {
+                user.NickName = model.NickName;
+                user.Comment = model.Comment;
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation(3, "User changed profile successfully.");
+                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangeProfileSuccess });
+                }
+                AddErrors(result);
+                return View(model);
+            }
+            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+        }
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
@@ -347,6 +390,7 @@ namespace MegamiManager.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
+            ChangeProfileSuccess,
             Error
         }
 

@@ -10,8 +10,8 @@ namespace MegamiManager.Models.AccountViewModels
     {
         [Required]
         [StringLength(32)]
-        [Display(Name = "UserName")]
-        public string UserName { get; set; }
+        [Display(Name = "NickName")]
+        public string NickName { get; set; }
 
         [Required]
         [EmailAddress]

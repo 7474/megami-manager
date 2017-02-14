@@ -4,17 +4,17 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MegamiManager.Models.AccountViewModels
+namespace MegamiManager.Models.ManageViewModels
 {
-    public class ExternalLoginConfirmationViewModel
+    public class ChangeProfileViewModel
     {
         [Required]
         [StringLength(32)]
         [Display(Name = "NickName")]
         public string NickName { get; set; }
 
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        [MaxLength(1000)]
+        [Display(Name = "Comment")]
+        public string Comment { get; set; }
     }
 }
