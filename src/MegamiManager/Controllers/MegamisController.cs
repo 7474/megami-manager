@@ -55,7 +55,7 @@ namespace MegamiManager.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> AddImage(int? id)
+        public IActionResult AddImage(int? id)
         {
             return View();
         }

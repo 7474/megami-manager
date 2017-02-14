@@ -97,6 +97,11 @@ namespace MegamiManager
             app.UseIdentity();
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
+            app.UseTwitterAuthentication(new TwitterOptions()
+            {
+                ConsumerKey = Configuration["Authentication:Twitter:ConsumerKey"],
+                ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"]
+            });
 
             app.UseMvc(routes =>
             {

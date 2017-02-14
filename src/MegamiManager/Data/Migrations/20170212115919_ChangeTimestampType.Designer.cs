@@ -8,9 +8,10 @@ using MegamiManager.Data;
 namespace MegamiManager.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170212115919_AddProperties")]
+    partial class ChangeTimestampType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1");
@@ -20,9 +21,6 @@ namespace MegamiManager.Data.Migrations
                     b.Property<string>("Id");
 
                     b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("Comment")
-                        .HasAnnotation("MaxLength", 1000);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -35,9 +33,6 @@ namespace MegamiManager.Data.Migrations
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("NickName")
-                        .HasAnnotation("MaxLength", 32);
 
                     b.Property<string>("NormalizedEmail")
                         .HasAnnotation("MaxLength", 256);
